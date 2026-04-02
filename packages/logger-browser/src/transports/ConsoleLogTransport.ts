@@ -1,4 +1,4 @@
-import { createPlainTextLogFormatter, LogSeverity, noop, type LogFormatter, type LogTransport } from '@cdv/logger';
+import { createPlainTextLogFormatter, LogSeverity, noop, type LogFormatter, type LogTransport } from "@calmdown/logger";
 
 export interface ConsoleLike {
 	log(...args: string[]): void;
@@ -29,7 +29,7 @@ export function createConsoleLogTransport<TPayload>(options: ConsoleLogTransport
 		[LogSeverity.Debug]: out.debug,
 		[LogSeverity.Info]: out.info,
 		[LogSeverity.Warn]: out.warn,
-		[LogSeverity.Error]: out.error
+		[LogSeverity.Error]: out.error,
 	};
 
 	const transport: LogTransport<TPayload, string | (readonly string[])> = {
@@ -40,7 +40,7 @@ export function createConsoleLogTransport<TPayload>(options: ConsoleLogTransport
 			const callback = callbackMap[message.severity] ?? out.log;
 			const args = transport.formatter(message);
 			callback.apply(out, Array.isArray(args) ? args : [ args ]);
-		}
+		},
 	};
 
 	return transport;

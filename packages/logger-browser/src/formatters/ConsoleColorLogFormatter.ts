@@ -1,8 +1,8 @@
-import { createDateTimeFormatter, LogSeverity, toStringOrJson, type LogFormatter, type TimeFormatter } from '@cdv/logger';
+import { createDateTimeFormatter, LogSeverity, toStringOrJson, type LogFormatter, type TimeFormatter } from "@calmdown/logger";
 
 export enum StyleExtent {
 	HeaderOnly,
-	EntireLine
+	EntireLine,
 }
 
 export interface ConsoleColorSeverityInfo {
@@ -21,12 +21,12 @@ export interface ConsoleColorLogFormatterOptions<TPayload> {
  * ConsoleLogTransport.
  */
 export function createConsoleColorLogFormatter<TPayload>(
-	options: ConsoleColorLogFormatterOptions<TPayload> = {}
+	options: ConsoleColorLogFormatterOptions<TPayload> = {},
 ): LogFormatter<TPayload, string[]> {
 	const {
 		onMapSeverity = defaultMapSeverity,
 		onStringifyPayload = toStringOrJson,
-		timeFormatter = createDateTimeFormatter()
+		timeFormatter = createDateTimeFormatter(),
 	} = options;
 
 	return message => {
@@ -36,7 +36,7 @@ export function createConsoleColorLogFormatter<TPayload>(
 		const header = `[${timeFormatter(message.timestamp)}][${message.label}]: `;
 		switch (style.extent) {
 			case StyleExtent.HeaderOnly:
-				return [ `%c${header}%c${onStringifyPayload(message.payload)}`, style.style, '' ];
+				return [ `%c${header}%c${onStringifyPayload(message.payload)}`, style.style, "" ];
 
 			case StyleExtent.EntireLine:
 				return [ `%c${header}${onStringifyPayload(message.payload)}`, style.style ];
@@ -47,29 +47,29 @@ export function createConsoleColorLogFormatter<TPayload>(
 const KNOWN_SEVERITIES: Record<number, ConsoleColorSeverityInfo | undefined> = {
 	[LogSeverity.Trace]: {
 		extent: StyleExtent.HeaderOnly,
-		style: 'color:#a0a0a0'
+		style: "color:#a0a0a0",
 	},
 	[LogSeverity.Debug]: {
 		extent: StyleExtent.HeaderOnly,
-		style: 'color:#a742ff'
+		style: "color:#a742ff",
 	},
 	[LogSeverity.Info]: {
 		extent: StyleExtent.HeaderOnly,
-		style: 'color:#309fff'
+		style: "color:#309fff",
 	},
 	[LogSeverity.Warn]: {
 		extent: StyleExtent.HeaderOnly,
-		style: 'color:#ffab2e'
+		style: "color:#ffab2e",
 	},
 	[LogSeverity.Error]: {
 		extent: StyleExtent.HeaderOnly,
-		style: 'color:#ff2e2e'
-	}
+		style: "color:#ff2e2e",
+	},
 };
 
 const UNKNOWN_SEVERITY: ConsoleColorSeverityInfo = {
 	extent: StyleExtent.HeaderOnly,
-	style: 'color:#ff2e2e'
+	style: "color:#ff2e2e",
 };
 
 function defaultMapSeverity(severity: LogSeverity) {

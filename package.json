@@ -1,17 +1,13 @@
 {
-	"name": "@cdv/logger-monorepo",
+	"name": "@calmdown/logger-monorepo",
 	"private": true,
-	"packageManager": "yarn@3.6.3",
+	"packageManager": "yarn@4.13.0",
 	"workspaces": [
+		"build-logic",
 		"packages/*"
 	],
 	"devDependencies": {
-		"@calmdownval/eslint-config": "2.0.4",
-		"@calmdownval/eslint-import-resolver": "1.0.0",
-		"@typescript-eslint/eslint-plugin": "6.2.1",
-		"@typescript-eslint/parser": "6.2.1",
-		"eslint": "8.46.0",
-		"eslint-plugin-import": "2.28.0",
-		"typescript": "5.1.6"
+		"build-logic": "workspace:*",
+		"typescript": "6.0.2"
 	}
 }

@@ -1,6 +1,6 @@
-import { LogSeverity } from '~/LogSeverity';
-import type { Lazy, LogDispatcher, LogMessage, Logger, RawLogCallback, TimeProvider } from '~/types';
-import { joinLabels } from '~/utils';
+import { LogSeverity } from "~/LogSeverity";
+import type { Lazy, LogDispatcher, LogMessage, Logger, RawLogCallback, TimeProvider } from "~/types";
+import { joinLabels } from "~/utils";
 
 interface InternalLogMessage<TPayload> extends LogMessage<TPayload> {
 	$payloadValue?: TPayload;
@@ -27,24 +27,24 @@ export function createLogger<TPayload>(options: LoggerOptions<TPayload>): Logger
 	const {
 		$dispatcher,
 		$label,
-		$timeProvider
+		$timeProvider,
 	} = options;
 
 	const log: RawLogCallback<TPayload> = (severity, payload) => {
 		const message = {
 			severity,
 			label: $label,
-			timestamp: $timeProvider.now()
+			timestamp: $timeProvider.now(),
 		} as InternalLogMessage<TPayload>;
 
-		if (typeof payload === 'function') {
+		if (typeof payload === "function") {
 			message.$payloadLazy = payload as Lazy<TPayload>;
 		}
 		else {
 			message.$payloadValue = payload;
 		}
 
-		Object.defineProperty(message, 'payload', PAYLOAD_PROPERTY);
+		Object.defineProperty(message, "payload", PAYLOAD_PROPERTY);
 		$dispatcher.$dispatch(message);
 	};
 
@@ -53,13 +53,13 @@ export function createLogger<TPayload>(options: LoggerOptions<TPayload>): Logger
 		getLogger: subLabel => createLogger({
 			$dispatcher,
 			$timeProvider,
-			$label: joinLabels($label, subLabel)
+			$label: joinLabels($label, subLabel),
 		}),
 		log,
 		trace: payload => log(LogSeverity.Trace, payload),
 		debug: payload => log(LogSeverity.Debug, payload),
 		info: payload => log(LogSeverity.Info, payload),
 		warn: payload => log(LogSeverity.Warn, payload),
-		error: payload => log(LogSeverity.Error, payload)
+		error: payload => log(LogSeverity.Error, payload),
 	};
 }

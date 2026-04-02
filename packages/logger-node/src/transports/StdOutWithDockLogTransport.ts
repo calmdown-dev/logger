@@ -1,4 +1,4 @@
-import { createPlainTextLogFormatter, LogSeverity, type LogFormatter, type LogTransport } from '@cdv/logger';
+import { createPlainTextLogFormatter, LogSeverity, type LogFormatter, type LogTransport } from "@calmdown/logger";
 
 export interface DockRow {
 	/** @internal */
@@ -40,11 +40,11 @@ export interface StdOutWithDockLogTransportOptions<TPayload> {
 
 /**
  * Creates a StdOutWithDockLogTransport. This transport outputs into the process stdout and provides
- * an interface to keep 'sticky' docked rows at the bottom of the output at all times. These rows
+ * an interface to keep "sticky" docked rows at the bottom of the output at all times. These rows
  * can dynamically change their text throughout runtime.
  */
 export function createStdOutWithDockLogTransport<TPayload>(
-	options: StdOutWithDockLogTransportOptions<TPayload>
+	options: StdOutWithDockLogTransportOptions<TPayload>,
 ) {
 	const dockGap = Math.max(options.dockGap ?? 1, 0);
 	const trimMargin = Math.max(options.trimMargin ?? 5, 0);
@@ -53,30 +53,30 @@ export function createStdOutWithDockLogTransport<TPayload>(
 	let cursor = -dockGap;
 	let dirtyIndex = 0;
 	let isPendingUpdate = false;
-	let lineBuffer = '';
+	let lineBuffer = "";
 
 	const onUpdate = () => {
 		const rowCount = rows.length;
 		const maxLength = process.stdout.columns - trimMargin;
 
-		let cmd = '';
-		let clearDown = '\u001b[0J';
-		let clearLine = '\u001b[2K';
+		let cmd = "";
+		let clearDown = "\u001b[0J";
+		let clearLine = "\u001b[2K";
 
 		if (lineBuffer.length > 0) {
-			cmd += cursorMove(-cursor - dockGap) + '\r' + clearDown + lineBuffer;
-			lineBuffer = '';
+			cmd += cursorMove(-cursor - dockGap) + "\r" + clearDown + lineBuffer;
+			lineBuffer = "";
 			dirtyIndex = 0;
 
 			cursor = -dockGap;
-			clearDown = '';
-			clearLine = '';
+			clearDown = "";
+			clearLine = "";
 		}
 
 		for (let i = 0; i < rowCount; ++i) {
 			const row = rows[i];
 			if (row.$isDirty || i >= dirtyIndex) {
-				cmd += cursorMove(i - cursor) + '\r' + clearLine + trimContent(row.text, maxLength) + '\n';
+				cmd += cursorMove(i - cursor) + "\r" + clearLine + trimContent(row.text, maxLength) + "\n";
 				row.$isDirty = false;
 
 				cursor = i + 1;
@@ -84,7 +84,7 @@ export function createStdOutWithDockLogTransport<TPayload>(
 		}
 
 		cmd += cursorMove(rowCount - cursor) + clearDown;
-		process.stdout.write(cmd, 'utf8');
+		process.stdout.write(cmd, "utf8");
 
 		cursor = rowCount;
 		dirtyIndex = rowCount;
@@ -103,14 +103,14 @@ export function createStdOutWithDockLogTransport<TPayload>(
 		scheduleUpdate();
 	};
 
-	process.on('SIGWINCH', onResize);
+	process.on("SIGWINCH", onResize);
 
 	const transport: StdOutWithDockLogTransport<TPayload> = {
 		formatter: options.formatter ?? createPlainTextLogFormatter(),
 		minSeverity: options.minSeverity ?? LogSeverity.Info,
 		dock: {
 			[Symbol.iterator]: () => rows[Symbol.iterator](),
-			add: (initialText = '') => {
+			add: (initialText = "") => {
 				let text = initialText;
 				const row: DockRow = {
 					$isDirty: true,
@@ -122,7 +122,7 @@ export function createStdOutWithDockLogTransport<TPayload>(
 							row.$isDirty = true;
 							scheduleUpdate();
 						}
-					}
+					},
 				};
 
 				rows.push(row);
@@ -148,10 +148,10 @@ export function createStdOutWithDockLogTransport<TPayload>(
 			}
 		},
 		close: () => {
-			process.off('SIGWINCH', onResize);
+			process.off("SIGWINCH", onResize);
 		},
 		handle: message => {
-			const log = transport.formatter(message) + '\n';
+			const log = transport.formatter(message) + "\n";
 			if (!isPendingUpdate && rows.length === 0) {
 				process.stdout.write(log);
 			}
@@ -167,11 +167,11 @@ export function createStdOutWithDockLogTransport<TPayload>(
 
 function cursorMove(offset: number) {
 	const dist = Math.trunc(Math.abs(offset));
-	return dist > 0 ? `\u001b[${dist}${offset < 0 ? 'A' : 'B'}` : '';
+	return dist > 0 ? `\u001b[${dist}${offset < 0 ? "A" : "B"}` : "";
 }
 
 function sanitizeContent(content: string) {
-	return ('' + content).replace(/[\r\n]+/g, ' ');
+	return ("" + content).replace(/[\r\n]+/g, " ");
 }
 
 function trimContent(content: string, maxLength: number) {

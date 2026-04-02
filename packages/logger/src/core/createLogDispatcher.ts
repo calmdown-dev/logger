@@ -1,6 +1,6 @@
-import type { LogDispatcher, LogTransport, TimeProvider } from '~/types';
+import type { LogDispatcher, LogTransport, TimeProvider } from "~/types";
 
-import { createLogger } from './createLogger';
+import { createLogger } from "./createLogger";
 
 export interface LogDispatcherOptions {
 	readonly timeProvider: TimeProvider;
@@ -31,10 +31,10 @@ export function createLogDispatcher<TPayload>(options: LogDispatcherOptions) {
 		close: async () => {
 			isClosing = true;
 			const results = await Promise.allSettled(
-				Array.from(transports).map(transport => transport.close())
+				Array.from(transports).map(transport => transport.close()),
 			);
 
-			const firstRejected = results.find(result => result.status === 'rejected') as PromiseRejectedResult | undefined;
+			const firstRejected = results.find(result => result.status === "rejected") as PromiseRejectedResult | undefined;
 			if (firstRejected) {
 				throw firstRejected.reason;
 			}

@@ -1,8 +1,8 @@
 /**
- * Concatenates two logger labels together with a '.' (period) as a separator.
+ * Concatenates two logger labels together with a "." (period) as a separator.
  */
 export function joinLabels(currentLabel: string, subLabel: string) {
-	return currentLabel + '.' + subLabel;
+	return currentLabel + "." + subLabel;
 }
 
 /**
@@ -12,15 +12,15 @@ export function joinLabels(currentLabel: string, subLabel: string) {
  * E.g. calling `intToStringPad2(3.14)` will return `"03"`
  */
 export function intToStringPad2(value: number) {
-	const str = '' + Math.trunc(value);
-	return str.length >= 2 ? str : '0' + str;
+	const str = "" + Math.trunc(value);
+	return str.length >= 2 ? str : "0" + str;
 }
 
 /**
  * Passes strings as-is, any other data type is passed through JSON.stringify.
  */
 export function toStringOrJson(payload: unknown) {
-	return typeof payload === 'string'
+	return typeof payload === "string"
 		? payload
 		: JSON.stringify(payload);
 }

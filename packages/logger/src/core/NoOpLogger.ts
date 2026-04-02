@@ -1,18 +1,18 @@
-import type { Logger } from '~/types';
-import { noop } from '~/utils';
+import type { Logger } from "~/types";
+import { noop } from "~/utils";
 
 /**
  * A no-op Logger implementation that will drop any logs passed to it.
  *
- * Furthermore, `getLogger` calls will also return NoOpLogger; `label` is set to an empty string.
+ * `getLogger` calls will also return NoOpLogger; `label` is set to an empty string.
  */
 export const NoOpLogger: Logger<any> = {
-	label: '',
+	label: "",
 	getLogger: () => NoOpLogger,
 	log: noop,
 	trace: noop,
 	debug: noop,
 	info: noop,
 	warn: noop,
-	error: noop
+	error: noop,
 };

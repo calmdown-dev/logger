@@ -5,7 +5,7 @@ export interface TimeProvider {
 	readonly now: () => number;
 }
 
-export type NotLazy<T> = T extends (...a: any) => any ? never : T;
+export type Eager<T> = T extends (...a: any) => any ? never : T;
 export type Lazy<T> = () => T;
 
 export interface RawLogCallback<TPayload> {
@@ -13,7 +13,7 @@ export interface RawLogCallback<TPayload> {
 	 * Logs the given payload with the specified severity. Typically members of the LogSeverity enum
 	 * would be used, however any number can be used to e.g. define further fine-grained severities.
 	 */
-	(severity: number, payload: NotLazy<TPayload>): void;
+	(severity: number, payload: Eager<TPayload>): void;
 
 	/**
 	 * Logs the given lazy payload with the specified severity. Typically members of the LogSeverity
@@ -29,14 +29,14 @@ export interface RawLogCallback<TPayload> {
 	(severity: number, lazyPayload: Lazy<TPayload>): void;
 
 	/** @internal */
-	(severity: number, anyPayload: NotLazy<TPayload> | Lazy<TPayload>): void;
+	(severity: number, anyPayload: Eager<TPayload> | Lazy<TPayload>): void;
 }
 
 export interface LogCallback<TPayload> {
 	/**
 	 * Logs the given payload with a severity this callback belongs to.
 	 */
-	(payload: NotLazy<TPayload>): void;
+	(payload: Eager<TPayload>): void;
 
 	/**
 	 * Logs the given lazy payload with a severity this callback belongs to.
@@ -50,7 +50,7 @@ export interface LogCallback<TPayload> {
 	(lazyPayload: Lazy<TPayload>): void;
 
 	/** @internal */
-	(anyPayload: NotLazy<TPayload> | Lazy<TPayload>): void;
+	(anyPayload: Eager<TPayload> | Lazy<TPayload>): void;
 }
 
 export interface Logger<TPayload> {

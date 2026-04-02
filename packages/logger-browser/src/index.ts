@@ -1,2 +1,2 @@
-export * from './formatters/ConsoleColorLogFormatter';
-export * from './transports/ConsoleLogTransport';
+export * from "./formatters/ConsoleColorLogFormatter";
+export * from "./transports/ConsoleLogTransport";

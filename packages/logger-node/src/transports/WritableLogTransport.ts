@@ -1,7 +1,7 @@
-import { createWriteStream, type PathLike } from 'node:fs';
-import type { Writable } from 'node:stream';
+import { createWriteStream, type PathLike } from "node:fs";
+import type { Writable } from "node:stream";
 
-import { createPlainTextLogFormatter, LogSeverity, type LogFormatter, type LogTransport } from '@cdv/logger';
+import { createPlainTextLogFormatter, LogSeverity, type LogFormatter, type LogTransport } from "@calmdown/logger";
 
 export type WritableData = Buffer | Uint8Array | string;
 
@@ -16,35 +16,35 @@ export interface WritableLogTransportOptions<TPayload> {
  * Creates a LogTransport that outputs into an arbitrary Writable stream.
  */
 export function createWritableLogTransport<TPayload>(
-	options: WritableLogTransportOptions<TPayload>
+	options: WritableLogTransportOptions<TPayload>,
 ) {
 	const {
 		closeStream = true,
-		writable
+		writable,
 	} = options;
 
 	const transport: LogTransport<TPayload, WritableData> = {
 		formatter: options.formatter ?? createPlainTextLogFormatter(),
 		minSeverity: options.minSeverity ?? LogSeverity.Info,
-		close: () => closeStream
-			? new Promise<void>(resolve => {
-				writable.end(resolve);
-			})
-			: Promise.resolve(),
+		close: () => (
+			closeStream
+				? new Promise<void>(resolve => { writable.end(resolve) })
+				: Promise.resolve()
+		),
 		handle: message => {
 			if (!writable.errored) {
 				// We ignore the return value of write, because buffering and overflow handling is
 				// already implemented in Node's streams
 				writable.write(transport.formatter(message));
-				writable.write('\n');
+				writable.write("\n");
 			}
-		}
+		},
 	};
 
 	return transport;
 }
 
-export interface FileLogTransportOptions<TPayload> extends Omit<WritableLogTransportOptions<TPayload>, 'writable'> {
+export interface FileLogTransportOptions<TPayload> extends Omit<WritableLogTransportOptions<TPayload>, "writable"> {
 	readonly path: PathLike;
 }
 
@@ -54,11 +54,11 @@ export interface FileLogTransportOptions<TPayload> extends Omit<WritableLogTrans
 export function createFileLogTransport<TPayload>(options: FileLogTransportOptions<TPayload>) {
 	return createWritableLogTransport({
 		...options,
-		writable: createWriteStream(options.path)
+		writable: createWriteStream(options.path),
 	});
 }
 
-export interface StdOutLogTransportOptions<TPayload> extends Omit<WritableLogTransportOptions<TPayload>, 'writable'> {}
+export interface StdOutLogTransportOptions<TPayload> extends Omit<WritableLogTransportOptions<TPayload>, "writable"> {}
 
 /**
  * Creates a LogTransport that outputs into the process.stdout stream.
@@ -66,6 +66,6 @@ export interface StdOutLogTransportOptions<TPayload> extends Omit<WritableLogTra
 export function createStdOutLogTransport<TPayload>(options: StdOutLogTransportOptions<TPayload>) {
 	return createWritableLogTransport({
 		...options,
-		writable: process.stdout
+		writable: process.stdout,
 	});
 }

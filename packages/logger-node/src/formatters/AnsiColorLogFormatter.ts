@@ -1,10 +1,10 @@
-import { createDateTimeFormatter, LogSeverity, toStringOrJson, type LogFormatter, type TimeFormatter } from '@cdv/logger';
+import { createDateTimeFormatter, LogSeverity, toStringOrJson, type LogFormatter, type TimeFormatter } from "@calmdown/logger";
 
-import { Ansi16, type AnsiColorSystem, type RgbColor } from '~/utils/AnsiColorSystem';
+import { Ansi16, type AnsiColorSystem, type RgbColor } from "~/utils/AnsiColorSystem";
 
 export enum ColorExtent {
 	HeaderOnly,
-	EntireLine
+	EntireLine,
 }
 
 export interface AnsiColorSeverityInfo {
@@ -24,13 +24,13 @@ export interface AnsiColorLogFormatterOptions<TPayload> {
  * Creates a LogFormatter with ANSI color support.
  */
 export function createAnsiColorLogFormatter<TPayload>(
-	options: AnsiColorLogFormatterOptions<TPayload> = {}
+	options: AnsiColorLogFormatterOptions<TPayload> = {},
 ): LogFormatter<TPayload, string> {
 	const {
 		colorSystem = Ansi16,
 		onMapSeverity = defaultMapSeverity,
 		onStringifyPayload = toStringOrJson,
-		timeFormatter = createDateTimeFormatter()
+		timeFormatter = createDateTimeFormatter(),
 	} = options;
 
 	return message => {
@@ -49,35 +49,35 @@ export function createAnsiColorLogFormatter<TPayload>(
 const KNOWN_SEVERITIES: Record<number, AnsiColorSeverityInfo | undefined> = {
 	[LogSeverity.Trace]: {
 		extent: ColorExtent.HeaderOnly,
-		name: 'TRACE',
-		color: 0xa0a0a0
+		name: "TRACE",
+		color: 0xa0a0a0,
 	},
 	[LogSeverity.Debug]: {
 		extent: ColorExtent.HeaderOnly,
-		name: 'DEBUG',
-		color: 0xa742ff
+		name: "DEBUG",
+		color: 0xa742ff,
 	},
 	[LogSeverity.Info]: {
 		extent: ColorExtent.HeaderOnly,
-		name: 'INFO',
-		color: 0x309fff
+		name: "INFO",
+		color: 0x309fff,
 	},
 	[LogSeverity.Warn]: {
 		extent: ColorExtent.HeaderOnly,
-		name: 'WARN',
-		color: 0xffab2e
+		name: "WARN",
+		color: 0xffab2e,
 	},
 	[LogSeverity.Error]: {
 		extent: ColorExtent.HeaderOnly,
-		name: 'ERROR',
-		color: 0xff2e2e
-	}
+		name: "ERROR",
+		color: 0xff2e2e,
+	},
 };
 
 function defaultMapSeverity(severity: LogSeverity) {
 	return KNOWN_SEVERITIES[severity] ?? {
 		extent: ColorExtent.HeaderOnly,
 		name: `UNKNOWN:${severity}`,
-		color: 0xff2e2e
+		color: 0xff2e2e,
 	};
 }

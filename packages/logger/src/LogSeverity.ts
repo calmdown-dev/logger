@@ -12,5 +12,5 @@ export enum LogSeverity {
 	Info = 300,
 	Warn = 400,
 	Error = 500,
-	Off = 1_000_000
+	Off = 1_000_000,
 }

@@ -1,28 +1,21 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
-		"lib": [
-			"ESNext"
-		],
+		"lib": [ "ESNext" ],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"newLine": "lf",
-		"noEmit": true,
 		"paths": {
-			"~/*": [
-				"*"
-			]
+			"~/*": [ "./src/*" ]
 		},
 		"skipLibCheck": true,
 		"stripInternal": true,
 		"strict": true,
 		"target": "ESNext",
-		"types": [
-			"node"
-		]
+		"types": [ "node" ],
+		"verbatimModuleSyntax": true
 	},
 	"include": [
-		"./src/**/*"
+		"./src/**/*.ts"
 	]
 }

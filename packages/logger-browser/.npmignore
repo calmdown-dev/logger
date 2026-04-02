@@ -1,5 +1,3 @@
-!build
 src
-.eslintrc
-rollup.config.mjs
+build.config.js
 tsconfig.json

@@ -1,6 +1,6 @@
-import type { LogFormatter } from '~/types';
+import type { LogFormatter } from "~/types";
 
-import { defaultStringifySeverity } from './internal/defaultStringifySeverity';
+import { defaultStringifySeverity } from "./internal/defaultStringifySeverity";
 
 export interface JsonReplacer {
 	(this: any, key: string, value: any): any;
@@ -18,7 +18,7 @@ export interface JsonLogFormatterOptions {
 export function createJsonLogFormatter(options: JsonLogFormatterOptions = {}): LogFormatter<any, string> {
 	const {
 		onReplaceJson,
-		onTransformSeverity = defaultStringifySeverity
+		onTransformSeverity = defaultStringifySeverity,
 	} = options;
 
 	return message => JSON.stringify(
@@ -26,8 +26,8 @@ export function createJsonLogFormatter(options: JsonLogFormatterOptions = {}): L
 			timestamp: new Date(message.timestamp),
 			label: message.label,
 			severity: onTransformSeverity(message.severity),
-			payload: message.payload
+			payload: message.payload,
 		},
-		onReplaceJson
+		onReplaceJson,
 	);
 }
