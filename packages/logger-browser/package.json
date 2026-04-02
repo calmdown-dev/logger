@@ -5,8 +5,8 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"require": "./dist/index.min.cjs",
-			"default": "./dist/index.min.mjs",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.mjs",
 			"types": "./dist/index.d.ts"
 		}
 	},
