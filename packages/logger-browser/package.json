@@ -1,17 +1,16 @@
 {
 	"name": "@calmdown/logger-browser",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "ISC",
 	"type": "module",
 	"exports": {
 		".": {
-			"require": "./dist/index.cjs",
-			"default": "./dist/index.mjs",
+			"import": "./dist/index.js",
 			"types": "./dist/index.d.ts"
 		}
 	},
 	"peerDependencies": {
-		"@calmdown/logger": "1.0.0"
+		"@calmdown/logger": "1.0.1"
 	},
 	"devDependencies": {
 		"@calmdown/logger": "workspace:*",

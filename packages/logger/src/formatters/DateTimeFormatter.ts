@@ -28,7 +28,7 @@ export interface DateTimeFormatterOptions {
 
 /**
  * Creates a TimeFormatter capable of formatting Unix epoch millisecond timestamps into any
- * string-representations of date, time, timezone etc.
+ * string representations of date, time and timezone.
  */
 export function createDateTimeFormatter(options: DateTimeFormatterOptions = {}): TimeFormatter {
 	const {

@@ -62,7 +62,7 @@ __metadata:
     build-logic: "workspace:*"
     typescript: "npm:6.0.2"
   peerDependencies:
-    "@calmdown/logger": 1.0.0
+    "@calmdown/logger": 1.0.1
   languageName: unknown
   linkType: soft
 
@@ -84,7 +84,7 @@ __metadata:
     build-logic: "workspace:*"
     typescript: "npm:6.0.2"
   peerDependencies:
-    "@calmdown/logger": 1.0.0
+    "@calmdown/logger": 1.0.1
   languageName: unknown
   linkType: soft
 
