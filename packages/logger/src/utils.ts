@@ -1,3 +1,17 @@
+import { S_LOGGER } from "./marker";
+import type { Logger } from "./types";
+
+/**
+ * Type guard function checking whether an arbitrary provided values is a Logger instance.
+ */
+export function isLogger<TPayload = unknown>(value: unknown): value is Logger<TPayload> {
+	return (
+		value !== null &&
+		typeof value === "object" &&
+		(value as Logger<unknown>)[S_LOGGER] === true
+	);
+}
+
 /**
  * Concatenates two logger labels together with a "." (period) as a separator.
  */
@@ -22,7 +36,42 @@ export function intToStringPad2(value: number) {
 export function toStringOrJson(payload: unknown) {
 	return typeof payload === "string"
 		? payload
-		: JSON.stringify(payload);
+		: safeStringifyJson(payload);
+}
+
+/**
+ * Safely converts any value into JSON. Quietly skips cyclic references and any unsupported types.
+ * BigInts are converted to strings.
+ */
+export function safeStringifyJson(value: unknown, space?: string | number) {
+	const refs = new WeakSet();
+	const replacer = (_key: string, value: unknown) => {
+		switch (typeof value) {
+			case "object":
+				if (value === null) {
+					return null;
+				}
+
+				if (refs.has(value)) {
+					return undefined;
+				}
+
+				refs.add(value);
+				return value;
+
+			case "bigint":
+				return value.toString();
+
+			case "function":
+			case "symbol":
+				return undefined;
+
+			default:
+				return value;
+		}
+	};
+
+	return JSON.stringify(value, replacer, space);
 }
 
 /**

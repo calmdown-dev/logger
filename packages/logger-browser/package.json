@@ -1,6 +1,6 @@
 {
 	"name": "@calmdown/logger-browser",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "ISC",
 	"type": "module",
 	"exports": {

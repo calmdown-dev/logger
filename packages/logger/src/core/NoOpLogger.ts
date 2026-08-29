@@ -1,3 +1,4 @@
+import { S_LOGGER } from "~/marker";
 import type { Logger } from "~/types";
 import { noop } from "~/utils";
 
@@ -6,8 +7,10 @@ import { noop } from "~/utils";
  *
  * `getLogger` calls will also return NoOpLogger; `label` is set to an empty string.
  */
-export const NoOpLogger: Logger<any> = {
+const NoOpLogger: Logger<any> = {
+	[S_LOGGER]: true,
 	label: "",
+	origin: null!,
 	getLogger: () => NoOpLogger,
 	log: noop,
 	trace: noop,
@@ -16,3 +19,7 @@ export const NoOpLogger: Logger<any> = {
 	warn: noop,
 	error: noop,
 };
+
+(NoOpLogger as any).origin = NoOpLogger;
+
+export { NoOpLogger };

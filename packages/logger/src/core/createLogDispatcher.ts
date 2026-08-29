@@ -25,6 +25,7 @@ export function createLogDispatcher<TPayload>(options: LogDispatcherOptions) {
 		},
 		getLogger: $label => createLogger({
 			$dispatcher: dispatcher,
+			$origin: dispatcher,
 			$label,
 			$timeProvider: options.timeProvider
 		}),

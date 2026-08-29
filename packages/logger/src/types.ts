@@ -1,3 +1,5 @@
+import type { S_LOGGER } from "./marker";
+
 export interface TimeProvider {
 	/**
 	 * Returns the current time as Unix epoch milliseconds.
@@ -53,16 +55,30 @@ export interface LogCallback<TPayload> {
 	(anyPayload: Eager<TPayload> | Lazy<TPayload>): void;
 }
 
-export interface Logger<TPayload> {
+export interface LoggerFactory<TPayload> {
+	/**
+	 * Creates a new Logger with the specified label. When used in nested Loggers, a sub-logger is
+	 * created with the new label appended to the parent Logger's label.
+	 */
+	readonly getLogger: (label: string) => Logger<TPayload>;
+}
+
+export interface Logger<TPayload> extends LoggerFactory<TPayload> {
+	/**
+	 * Internal type-guard marker.
+	 * @internal
+	 */
+	readonly [S_LOGGER]: true;
+
 	/**
 	 * Gets the label of this Logger.
 	 */
 	readonly label: string;
 
 	/**
-	 * Gets the LoggerFactory used to create sub-loggers of this Logger.
+	 * Gets the factory that created this logger.
 	 */
-	readonly getLogger: LoggerFactory<TPayload>;
+	readonly origin: LoggerFactory<TPayload>;
 
 	/**
 	 * Gets the RawLogCallback of this Logger capable of dynamically specifying log severity.
@@ -93,14 +109,6 @@ export interface Logger<TPayload> {
 	 * Gets the LogCallback of this Logger logging at the LogSeverity.Error severity.
 	 */
 	readonly error: LogCallback<TPayload>;
-}
-
-export interface LoggerFactory<TPayload> {
-	/**
-	 * Creates a new Logger with the specified label. When used in nested Loggers, a sub-logger is
-	 * created with the new label appended to the parent Logger's label.
-	 */
-	(label: string): Logger<TPayload>;
 }
 
 export interface Closeable {
@@ -193,16 +201,11 @@ export interface LogTransportCollection<TPayload> extends Iterable<LogTransport<
 	readonly remove: LogTransportRemoveCallback<TPayload>;
 }
 
-export interface LogDispatcher<TPayload> extends Closeable {
+export interface LogDispatcher<TPayload> extends Closeable, LoggerFactory<TPayload> {
 	/**
 	 * Gets the LogTransportCollection containing the LogTransports used by this LogDispatcher.
 	 */
 	readonly transports: LogTransportCollection<TPayload>;
-
-	/**
-	 * Gets the LoggerFactory used to create loggers dispatching through this LogDispatcher.
-	 */
-	readonly getLogger: LoggerFactory<TPayload>;
 
 	/** @internal */
 	readonly $dispatch: (message: LogMessage<TPayload>) => void;

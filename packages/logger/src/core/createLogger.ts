@@ -1,5 +1,6 @@
 import { LogSeverity } from "~/LogSeverity";
-import type { Lazy, LogDispatcher, LogMessage, Logger, RawLogCallback, TimeProvider } from "~/types";
+import { S_LOGGER } from "~/marker";
+import type { Lazy, LogDispatcher, LogMessage, Logger, LoggerFactory, RawLogCallback, TimeProvider } from "~/types";
 import { joinLabels } from "~/utils";
 
 interface InternalLogMessage<TPayload> extends LogMessage<TPayload> {
@@ -18,6 +19,7 @@ const PAYLOAD_PROPERTY: PropertyDescriptor = {
 /** @internal */
 export interface LoggerOptions<TPayload> {
 	readonly $dispatcher: LogDispatcher<TPayload>;
+	readonly $origin: LoggerFactory<TPayload>;
 	readonly $label: string;
 	readonly $timeProvider: TimeProvider;
 }
@@ -48,10 +50,13 @@ export function createLogger<TPayload>(options: LoggerOptions<TPayload>): Logger
 		$dispatcher.$dispatch(message);
 	};
 
-	return {
+	const logger: Logger<TPayload> = {
+		[S_LOGGER]: true,
 		label: $label,
+		origin: options.$origin,
 		getLogger: subLabel => createLogger({
 			$dispatcher,
+			$origin: logger,
 			$timeProvider,
 			$label: joinLabels($label, subLabel),
 		}),
@@ -62,4 +67,6 @@ export function createLogger<TPayload>(options: LoggerOptions<TPayload>): Logger
 		warn: payload => log(LogSeverity.Warn, payload),
 		error: payload => log(LogSeverity.Error, payload),
 	};
+
+	return logger;
 }
