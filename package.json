@@ -1,13 +1,13 @@
 {
 	"name": "@calmdown/logger-monorepo",
 	"private": true,
-	"packageManager": "yarn@4.13.0",
+	"packageManager": "pnpm@11.24.0",
 	"workspaces": [
 		"build-logic",
 		"packages/*"
 	],
 	"devDependencies": {
-		"build-logic": "workspace:*",
-		"typescript": "6.0.2"
+		"build-logic": "workspace:",
+		"typescript": "catalog:"
 	}
 }

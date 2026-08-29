@@ -14,11 +14,11 @@
 		"build": "./bin/build.js"
 	},
 	"devDependencies": {
-		"@calmdown/rolldown-workspace": "1.0.0-rc.3",
-		"@calmdown/rollup-plugin-copy": "1.0.0",
-		"@calmdown/rollup-plugin-delete": "1.0.0",
-		"rolldown": "1.0.0-rc.10",
-		"rolldown-plugin-dts": "0.23.2",
-		"typescript": "6.0.2"
+		"@calmdown/rolldown-workspace": "catalog:",
+		"@calmdown/rollup-plugin-copy": "catalog:",
+		"@calmdown/rollup-plugin-delete": "catalog:",
+		"rolldown": "catalog:",
+		"rolldown-plugin-dts": "catalog:",
+		"typescript": "catalog:"
 	}
 }

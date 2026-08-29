@@ -10,12 +10,12 @@
 		}
 	},
 	"peerDependencies": {
-		"@calmdown/logger": "1.0.1"
+		"@calmdown/logger": "workspace:"
 	},
 	"devDependencies": {
-		"@calmdown/logger": "workspace:*",
-		"@types/node": "25.5.0",
-		"build-logic": "workspace:*",
-		"typescript": "6.0.2"
+		"@calmdown/logger": "workspace:",
+		"@types/node": "catalog:",
+		"build-logic": "workspace:",
+		"typescript": "catalog:"
 	}
 }

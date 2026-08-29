@@ -1,0 +1,24 @@
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+ignoreWorkspaceCycles: true
+packages:
+  - "./build-logic"
+  - "./packages/*"
+
+catalogMode: strict
+catalog:
+  "@calmdown/rolldown-workspace": 1.0.0-rc.7
+  "@calmdown/rollup-plugin-copy": 1.0.1
+  "@calmdown/rollup-plugin-delete": 1.0.1
+  "@types/node": 26.1.1
+  "rolldown": 1.2.0
+  "rolldown-plugin-dts": 0.27.9
+  "typescript": 6.0.3
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - "@calmdown/*"
+
+minimumReleaseAge: 10080 # 2w
+minimumReleaseAgeExclude:
+  - "@calmdown/*"

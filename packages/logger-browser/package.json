@@ -10,11 +10,11 @@
 		}
 	},
 	"peerDependencies": {
-		"@calmdown/logger": "1.0.1"
+		"@calmdown/logger": "workspace:"
 	},
 	"devDependencies": {
-		"@calmdown/logger": "workspace:*",
-		"build-logic": "workspace:*",
-		"typescript": "6.0.2"
+		"@calmdown/logger": "workspace:",
+		"build-logic": "workspace:",
+		"typescript": "catalog:"
 	}
 }
